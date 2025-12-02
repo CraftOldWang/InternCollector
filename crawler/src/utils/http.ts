@@ -1,4 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import { wrapper } from "axios-cookiejar-support";
+import { CookieJar } from "tough-cookie";
 import { logger } from "./logger";
 
 /**
@@ -17,6 +19,16 @@ export function createHttpClient(
         },
         ...baseConfig,
     });
+
+    // 如果传入了 jar 或者启用了 withCredentials，则自动启用 cookieJar 支持
+    try {
+        const jar = new CookieJar();
+        wrapper(client as any);
+        (client as any).defaults.jar = jar;
+        (client as any).defaults.withCredentials = true;
+    } catch (e) {
+        // 忽略，如果模块未安装或出现错误
+    }
 
     // 请求拦截器
     client.interceptors.request.use(

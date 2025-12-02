@@ -1,5 +1,7 @@
 import { ICompanyAdapter } from "../types";
 import { ByteDanceAdapter } from "./bytedance";
+import { TencentAdapter } from "./tencent";
+import { MeituanAdapter } from "./meituan";
 
 /**
  * 适配器注册表
@@ -9,6 +11,8 @@ const adapterRegistry: Map<string, () => ICompanyAdapter> = new Map();
 
 // 注册已实现的适配器
 adapterRegistry.set("bytedance", () => new ByteDanceAdapter());
+adapterRegistry.set("tencent", () => new TencentAdapter());
+adapterRegistry.set("meituan", () => new MeituanAdapter());
 
 /**
  * 获取指定公司的适配器
@@ -32,5 +36,8 @@ export function getAllAdapters(): ICompanyAdapter[] {
     return getRegisteredCompanies().map((code) => getAdapter(code)!);
 }
 
-// 导出所有适配器类
+
+
 export { ByteDanceAdapter } from "./bytedance";
+export { TencentAdapter } from "./tencent";
+export { MeituanAdapter } from "./meituan";

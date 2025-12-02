@@ -122,34 +122,32 @@ export class ByteDanceAdapter implements ICompanyAdapter {
         );
         const csrfToken = csrfResponse.data?.data?.token;
 
-        const params = new URLSearchParams({
+        const payload = {
             keyword: "",
-            limit: String(limit),
-            offset: String(offset),
-            job_category_id_list: "",
-            tag_id_list: "",
-            location_code_list: "",
-            subject_id_list: "",
-            recruitment_id_list: "",
-            portal_type: "3", // 校园招聘
-            job_function_id_list: "",
-            storefront_id_list: "",
-            portal_entrance: "1",
-        });
+            limit: Number(limit),
+            offset: Number(offset),
+            job_category_id_list: [],
+            tag_id_list: [],
+            location_code_list: [],
+            subject_id_list: [],
+            recruitment_id_list: [],
+            portal_type: 3, // 校园招聘
+            job_function_id_list: [],
+            storefront_id_list: [],
+            portal_entrance: 1,
+        };
 
         const headers: Record<string, string> = {
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/json",
         };
 
         if (csrfToken) {
             headers["X-CSRF-Token"] = csrfToken;
         }
 
-        const response = await this.http.post(
-            `${this.apiUrl}?${params.toString()}`,
-            null,
-            { headers }
-        );
+        const response = await this.http.post(this.apiUrl, payload, {
+            headers,
+        });
 
         if (response.data?.code === 0) {
             return { success: true, data: response.data.data };

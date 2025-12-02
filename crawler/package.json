@@ -1,28 +1,31 @@
 {
-    "name": "crawler",
-    "version": "1.0.0",
-    "description": "实习岗位聚合平台 - 爬虫模块",
-    "main": "dist/index.js",
-    "scripts": {
-        "build": "tsc",
-        "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
-        "crawl": "ts-node src/index.ts",
-        "crawl:bytedance": "ts-node src/index.ts --company=bytedance"
-    },
-    "dependencies": {
-        "axios": "^1.6.2",
-        "cheerio": "^1.0.0-rc.12",
-        "playwright": "^1.40.1",
-        "p-queue": "^6.6.2",
-        "dotenv": "^16.3.1",
-        "winston": "^3.11.0",
-        "crypto-js": "^4.2.0"
-    },
-    "devDependencies": {
-        "@types/node": "^20.10.0",
-        "@types/crypto-js": "^4.2.1",
-        "typescript": "^5.3.2",
-        "ts-node-dev": "^2.0.0",
-        "ts-node": "^10.9.2"
-    }
+  "name": "crawler",
+  "version": "1.0.0",
+  "description": "实习岗位聚合平台 - 爬虫模块",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "crawl": "ts-node src/index.ts",
+    "crawl:bytedance": "ts-node src/index.ts --company=bytedance"
+  },
+  "dependencies": {
+    "axios": "^1.6.2",
+    "axios-cookiejar-support": "^2.0.1",
+    "cheerio": "^1.0.0-rc.12",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^16.3.1",
+    "p-queue": "^6.6.2",
+    "playwright": "^1.40.1",
+    "tough-cookie": "^4.0.0",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@types/crypto-js": "^4.2.1",
+    "@types/node": "^20.10.0",
+    "@types/tough-cookie": "^4.0.5",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.3.2"
+  }
 }
