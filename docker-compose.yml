@@ -1,0 +1,65 @@
+services:
+    # PostgreSQL 数据库
+    db:
+        image: postgres:15-alpine
+        container_name: intern-collector-db
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: intern_collector
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        restart: unless-stopped
+
+    # Redis 缓存（可选，用于速率限制等）
+    redis:
+        image: redis:7-alpine
+        container_name: intern-collector-redis
+        volumes:
+            - redis_data:/data
+        restart: unless-stopped
+
+    # 后端 API 服务
+    backend:
+        build:
+            context: ./backend
+            dockerfile: Dockerfile
+        container_name: intern-collector-backend
+        environment:
+            NODE_ENV: development
+            DB_HOST: db
+            DB_PORT: 5432
+            DB_USERNAME: postgres
+            DB_PASSWORD: postgres
+            DB_DATABASE: intern_collector
+            PORT: 3000
+            CRAWL_CRON: "0 */6 * * *"
+        ports:
+            - "3001:3000"
+        depends_on:
+            db:
+                condition: service_healthy
+        restart: unless-stopped
+
+    # 前端服务
+    frontend:
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile
+        container_name: intern-collector-frontend
+        ports:
+            - "80:80"
+        depends_on:
+            - backend
+        restart: unless-stopped
+
+volumes:
+    postgres_data:
+    redis_data:
